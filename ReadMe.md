@@ -4,6 +4,13 @@
 
 Dans ce projet, nous utiliserons le corpus WASABI
 
+https://www.kaggle.com/datasets/fayssalelansari/wasabi-song-corpus
+https://colab.research.google.com/drive/1wp4YxLdenl4VCbzRV6lFYP3J0p6-uNFJ?authuser=3
+
+## GROUPE
+
+HarmoniViz
+
 ## COLLABORATEURS
 
     * Fayssal EL ANSARI
