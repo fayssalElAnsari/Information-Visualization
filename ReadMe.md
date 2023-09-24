@@ -44,10 +44,12 @@ This is the goal of this project, we'll be visualizing the data in four differen
 - **Assignee**: Milena KOSTOV
 
 
-
+### Graphes pour afficher les collaborations entre les artistes
 Graphes pour afficher les collaborations entre les artistes (les artistes sont représentés par 
     des nœuds et les relations entre les artistes par des arêtes).
 
+
+### Listes/Clusters/Sets pour regrouper les artistes
 Listes/Clusters/Sets pour regrouper les artistes par genre musical, regrouper les albums par
      genre musical et date de publication.
 
