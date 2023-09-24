@@ -70,12 +70,29 @@ C'est l'objectif de ce projet. Nous visualiserons les données selon quatre mét
 **Responsable** : Fayssal EL ANSARI  
 **Documentation** : https://observablehq.com/@d3/histogram/2?intent=fork
 
-### 2. ...
+### 2. Tables pour afficher les informations sur les artistes, les albums et les titres
 
-### 3. ...
+**Visualization** : une table qui affiche des informations soit sur les artistes soit les albums soit les titres. L'utilisateur peut choisir les attributs qu'il souhaite faire apparaitre, filtrer les donnees par rapport a une date. Chaque ligne représente un artiste, un album ou un titre.  
+**Scénario**: Un professionnel de la musique souhaite etudier les tendances selon differents filtres (genre musical, annee de publication, etc...)  
+**Utile pour** : professionnels de l'industrie musical  
+**Responsable**: Milena KOSTOV
 
-### 4. ...
+### 3. Graphes pour afficher les collaborations entre les artistes
+
+**Visualization** : Graphes pour afficher les collaborations entre les artistes (les artistes sont représentés par des nœuds et les relations entre les artistes par des arêtes).
+**Scénario**:
+**Utile pour** :  
+**Responsable**:
+
+### 4. Listes/Clusters/Sets pour regrouper les artistes
+
+**Visualization** : Listes/Clusters/Sets pour regrouper les artistes par genre musical, regrouper les albums par genre musical et date de publication.
+**Scénario**:  
+**Utile pour** :  
+**Responsable**:
 
 ## ENSEMBLE DE DONNÉES
 
 - WASABI : https://github.com/micbuffa/WasabiDataset
+
+### LICENSE
