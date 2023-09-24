@@ -68,7 +68,7 @@ C'est l'objectif de ce projet. Nous visualiserons les données selon quatre mét
 - **Actions possibles**:
   - Un filtre par période : Voir la distribution des genres musicaux pour des décennies spécifiques.
   - Zoomer et explorer : Agrandir des sections spécifiques de l'histogramme pour une analyse détaillée.
-    Cliquer sur une barre : Afficher la liste des albums de ce genre, avec des liens vers des détails supplémentaires.
+  - Cliquer sur une barre : Afficher la liste des albums de ce genre, avec des liens vers des détails supplémentaires.
   - Comparer : Sélectionner plusieurs genres pour les comparer côte à côte.
 - **Scénario** : Un analyste de l'industrie musicale souhaite comprendre la distribution des albums à travers différents genres.
 - **Utile pour** : Les producteurs de musique, les maisons de disques ou les chercheurs du marché.
