@@ -7,8 +7,8 @@ In this project we'll be using the WASABI dataset
 ## COLLABORATORS
 
 - Fayssal EL ANSARI
+- Milena KOSTOV
 - ...
--
 -
 
 ## PIPELINE
@@ -34,6 +34,14 @@ This is the goal of this project, we'll be visualizing the data in four differen
 - **Beneficial for**: Music producers, record companies, or market researchers.
 - **Assignee**: Fayssal EL ANSARI
 - **doc**: https://observablehq.com/@d3/histogram/2?intent=fork
+
+
+### Tables pour afficher les informations sur les artistes, les albums et les titres
+
+- **Visualization** : une table qui affiche des informations soit sur les artistes soit les albums soit les titres. L'utilisateur peut choisir les attributs qu'il souhaite faire apparaitre, filtrer les donnees par rapport a une date. Chaque ligne représente un artiste, un album ou un titre.
+- **Scenario**: Un professionnel de la musique souhaite etudier les tendances selon differents filtres (genre musical, annee de publication, etc...)
+- **Interets pour**: professionnels de l'industrie musical
+- **Assignee**: Milena KOSTOV
 
 ## DATASET
 
