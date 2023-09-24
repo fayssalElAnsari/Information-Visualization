@@ -79,14 +79,14 @@ C'est l'objectif de ce projet. Nous visualiserons les données selon quatre mét
 
 ### 3. Graphes pour afficher les collaborations entre les artistes
 
-**Visualization** : Graphes pour afficher les collaborations entre les artistes (les artistes sont représentés par des nœuds et les relations entre les artistes par des arêtes).
-**Scénario**:
+**Visualization** : Graphes pour afficher les collaborations entre les artistes (les artistes sont représentés par des nœuds et les relations entre les artistes par des arêtes).  
+**Scénario**:  
 **Utile pour** :  
 **Responsable**:
 
 ### 4. Listes/Clusters/Sets pour regrouper les artistes
 
-**Visualization** : Listes/Clusters/Sets pour regrouper les artistes par genre musical, regrouper les albums par genre musical et date de publication.
+**Visualization** : Listes/Clusters/Sets pour regrouper les artistes par genre musical, regrouper les albums par genre musical et date de publication.  
 **Scénario**:  
 **Utile pour** :  
 **Responsable**:
