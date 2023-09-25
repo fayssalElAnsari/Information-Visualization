@@ -95,6 +95,8 @@ C'est l'objectif de ce projet. Nous visualiserons les données selon quatre mét
 
 ### 3. Graphes pour afficher les collaborations entre les artistes
 
+WARNING : ID unique par musique --> collaboration abscente => pas de lien possible
+
 - **Visualisation** : Graphes où les nœuds représentent les artistes et les arêtes représentent les collaborations entre eux. Chaque nœud peut être coloré selon le genre musical de l'artiste, offrant une vue d'ensemble des collaborations inter-genres.
 - **Actions possibles**:
   - Zoom et Pan: Les utilisateurs peuvent zoomer sur une partie spécifique du graphe pour voir des détails ou se déplacer dans le graphe.
