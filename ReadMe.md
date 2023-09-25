@@ -82,15 +82,15 @@ C'est l'objectif de ce projet. Nous visualiserons les données selon quatre mét
 - **Responsable** : Fayssal EL ANSARI
 - **Documentation** : https://observablehq.com/@d3/histogram/2?intent=fork
 
-### 2. Tables pour afficher les informations sur les artistes, les albums et les titres
+### 2. Compartimentage de cercles pour representer la hierarchisation genre, artiste, album et titre
 
-- **Visualization** : une table qui affiche des informations soit sur les artistes soit les albums soit les titres. L'utilisateur peut choisir les attributs qu'il souhaite faire apparaitre, filtrer les donnees par rapport a une date. Chaque ligne représente un artiste, un album ou un titre.
+- **Visualization** : Un comportimentage de cercles ou chaque cercle montre un niveau different (genre, artiste, album, titre).
 - **Actions possibles**:
-  - Filtrage: Les utilisateurs peuvent filtrer les tables par différents critères, tels que le genre musical, l'année de publication, le nom de l'artiste, etc.
-  - Tri: Possibilité de trier les données par colonne, par exemple, par date de sortie d'album, par popularité, par nom d'artiste, etc.
-  - Sélection: Les utilisateurs peuvent sélectionner des entrées spécifiques pour obtenir des détails supplémentaires ou pour les comparer.
-- **Scénario**: Un professionnel de la musique souhaite etudier les tendances selon differents filtres (genre musical, annee de publication, etc...)
-- **Utile pour** : professionnels de l'industrie musical
+  - Zoom : possibilite de zoomer sur une donnée afin d'afficher des informations plus precises (par exemple, en cliquant sur un artiste on zoom sur les albums et les titres associes)
+  - Navigation : passage entre differents niveaux de lecture.
+  - Sélection: Les utilisateurs peuvent sélectionner un genre, un artiste.
+- **Scénario**: Un professionnel de la musique / un amateur de musique souhaite obtenir trouver un nouveau artiste et ses titres pour un genre donné
+- **Utile pour** : professionnels de l'industrie musical / un amateur de musique
 - **Responsable**: Milena KOSTOV
 
 ### 3. Graphes pour afficher les collaborations entre les artistes
