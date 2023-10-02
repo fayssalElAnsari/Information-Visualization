@@ -205,4 +205,5 @@ $RECYCLE.BIN/
 **/data/**.csv
 
 ## FORCED INCLUSIONS
-!/data/wasabi_albums_pre-processed.csv
+!/site/data/wasabi_albums_pre-processed.csv
+!/site/data/wasabi_albums_cluster_pre-processed.csv
