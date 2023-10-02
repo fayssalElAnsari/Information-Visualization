@@ -69,18 +69,22 @@ C'est l'objectif de ce projet. Nous visualiserons les données selon quatre mét
 
 ### DETAILS DE PROPOSITION
 
-### 1. Histogramme ou Graphique à Barres des Albums par Genre :
+### 1. Carte du Monde des Albums par Pays :
 
-- **Visualisation** : Un graphique à barres où chaque barre représente un genre et la hauteur de la barre indique le nombre d'albums de ce genre.
-- **Actions possibles**:
-  - Un filtre par période : Voir la distribution des genres musicaux pour des décennies spécifiques.
-  - Zoomer et explorer : Agrandir des sections spécifiques de l'histogramme pour une analyse détaillée.
-  - Cliquer sur une barre : Afficher la liste des albums de ce genre, avec des liens vers des détails supplémentaires.
-  - Comparer : Sélectionner plusieurs genres pour les comparer côte à côte.
-- **Scénario** : Un analyste de l'industrie musicale souhaite comprendre la distribution des albums à travers différents genres.
-- **Utile pour** : Les producteurs de musique, les maisons de disques ou les chercheurs du marché.
+- **Visualisation** : Une carte du monde où chaque pays est coloré en fonction du nombre d'albums associés. Les pays sont groupés par le nombre d'albums et lorsqu’on passe la souris sur un pays, toutes les informations correspondantes sont affichées.
+- **Actions possibles** :  
+   **Filtre Temporel** : Permet de visualiser les données d'albums pour des années spécifiques, grâce à une ligne de temps située en dessous de la carte.
+  Activation/Désactivation de la Ligne de Temps : Un bouton permet d'activer ou de désactiver la ligne de temps. Lorsque la ligne de temps est désactivée, les données sont affichées pour toute la période; sinon, elles sont groupées par année.
+  Zoomer et Explorer : Agrandir des sections spécifiques de la carte pour une analyse détaillée des pays.
+  Cliquer sur un Pays : Afficher la liste des albums de ce pays, avec des liens vers des détails supplémentaires.
+- **Scénario** : Un chercheur dans le domaine de la musique souhaite comprendre la distribution mondiale des albums, en analysant les tendances par pays et au fil du temps.
+- **Utile pour** : Les analystes de l'industrie musicale, les maisons de disques, les producteurs de musique et les chercheurs du marché.
 - **Responsable** : Fayssal EL ANSARI
-- **Documentation** : https://observablehq.com/@d3/histogram/2?intent=fork
+- **Documentation** :
+
+  https://d3js.org/d3-geo  
+   https://www.d3indepth.com/geographic/  
+   https://d3-graph-gallery.com/backgroundmap.html
 
 ### 2. Compartimentage de cercles pour representer la hierarchisation genre, artiste, album et titre
 
@@ -92,6 +96,7 @@ C'est l'objectif de ce projet. Nous visualiserons les données selon quatre mét
 - **Scénario**: Un professionnel de la musique / un amateur de musique souhaite obtenir trouver un nouveau artiste et ses titres pour un genre donné
 - **Utile pour** : professionnels de l'industrie musical / un amateur de musique
 - **Responsable**: Milena KOSTOV
+- **Documentation** : [Lien vers la Documentation Pertinente]
 
 ### 3. Graphes pour afficher les collaborations entre les artistes
 
@@ -104,6 +109,7 @@ C'est l'objectif de ce projet. Nous visualiserons les données selon quatre mét
 - **Scénario** : Un professionnel de la musique souhaite explorer les collaborations entre artistes pour identifier des tendances ou des collaborations inhabituelles.
 - **Utile pour** : Agents artistiques, chercheurs du marché, et fans de musique voulant découvrir des collaborations inattendues.  
   **Responsable** : Lucas LYON
+- **Documentation** : [Lien vers la Documentation Pertinente]
 
 ### 4. Listes/Clusters/Sets pour regrouper les artistes
 
@@ -116,6 +122,7 @@ C'est l'objectif de ce projet. Nous visualiserons les données selon quatre mét
 - **Scénario** : Un historien de la musique souhaite étudier l'évolution des genres musicaux à travers les décennies et identifier les artistes clés de chaque période.
 - **Utile pour** : Historiens de la musique, éducateurs, et passionnés de musique.  
   **Responsable** : Mohamed ELYSALEM
+- **Documentation** : [Lien vers la Documentation Pertinente]
 
 ## ENSEMBLE DE DONNÉES
 
