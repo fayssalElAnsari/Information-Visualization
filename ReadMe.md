@@ -38,9 +38,7 @@ C'est l'objectif de ce projet. Nous visualiserons les données selon quatre mét
 
 - Types de Données Visualisées
 
-  - **Tables** pour afficher des informations sur les artistes (nom, genre musical, date de naissance, etc.),
-    les albums (titre, date de sortie, classements, etc.) et les titres (artiste, durée, etc.).
-    Chaque ligne représente un artiste, un album ou un titre.
+  - **Compartimentage de cercles** pour afficher des informations selon differents niveaux de visualisation : le genre, les artistes, les albums et les titres.
 
   - **Graphes** pour afficher les collaborations entre les artistes (les artistes sont représentés par
     des nœuds et les relations entre les artistes par des arêtes).
@@ -92,11 +90,14 @@ C'est l'objectif de ce projet. Nous visualiserons les données selon quatre mét
 - **Actions possibles**:
   - Zoom : possibilite de zoomer sur une donnée afin d'afficher des informations plus precises (par exemple, en cliquant sur un artiste on zoom sur les albums et les titres associes)
   - Navigation : passage entre differents niveaux de lecture.
-  - Sélection: Les utilisateurs peuvent sélectionner un genre, un artiste.
+  - Sélection: Les utilisateurs peuvent sélectionner un genre, un artiste afin d'afficher les informations concernant un groupe bien precis. Par exemple, en cliquant sur un artiste on affiche ses albums et les titres contenus dans ces derniers.
 - **Scénario**: Un professionnel de la musique / un amateur de musique souhaite obtenir trouver un nouveau artiste et ses titres pour un genre donné
 - **Utile pour** : professionnels de l'industrie musical / un amateur de musique
 - **Responsable**: Milena KOSTOV
-- **Documentation** : [Lien vers la Documentation Pertinente]
+- **Documentation** :
+  
+  https://www.anychart.com/products/anychart/gallery/Circle_Packing/100_Richest_People,_According_to_Forbes.php
+  https://d3-graph-gallery.com/circularpacking.html
 
 ### 3. Graphes pour afficher les collaborations entre les artistes
 
