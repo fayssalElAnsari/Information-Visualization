@@ -97,6 +97,7 @@ C'est l'objectif de ce projet. Nous visualiserons les données selon quatre mét
 - **Documentation** :
   
   https://www.anychart.com/products/anychart/gallery/Circle_Packing/100_Richest_People,_According_to_Forbes.php
+  
   https://d3-graph-gallery.com/circularpacking.html
 
 ### 3. Graphes pour afficher les collaborations entre les artistes
