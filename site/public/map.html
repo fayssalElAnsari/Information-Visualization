@@ -7,13 +7,84 @@
     <!-- import the d3 library -->
     <!-- <script type="text/javascript" src="https://d3js.org/d3.v5.min.js"></script> -->
     <script type="text/javascript" src="lib/d3.v5.min.js"></script>
-    <script src="map.js"></script>
+    <!-- <script src="https://unpkg.com/country-iso-3-to-2"></script> -->
+    <!-- <script src="https://unpkg.com/iso-3166-1@1/dist/iso-3166-1.min.js"></script> -->
+
+    <!-- <script src="map.js"></script> -->
 
     <!-- style sheet -->
     <link rel="stylesheet" type="text/css" href="style.css" />
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script> -->
   </head>
 
-  <!-- <body>
-    <svg id="my_dataviz"></svg>
-  </body> -->
+  <body>
+    <svg id="scene">
+      <!-- <g id="links"></g>
+      <g id="labels"></g>
+      <g id="nodes"></g> -->
+    </svg>
+
+    <script>
+      // const getCountryISO2 = require("country-iso-3-to-2");
+
+      let width = 1250,
+        height = 1050,
+        svg = d3.select("#scene").attr("width", width).attr("height", height);
+
+      let projection = d3
+        .geoMercator()
+        .scale(200)
+        .translate([width / 2, height / 2]);
+
+      // Load external data
+      Promise.all([
+        d3.json("data/custom.geo.json"),
+        d3.csv(
+          // "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world_population.csv"
+          "data/wasabi_albums_pre-processed.csv"
+        ),
+      ]).then((files) => {
+        const groupedByCountry = files[1].reduce((accumulator, record) => {
+          if (accumulator[record.country]) {
+            accumulator[record.country]++;
+          } else {
+            accumulator[record.country] = 1;
+          }
+          return accumulator;
+        }, {});
+
+        const counts = Object.values(groupedByCountry);
+        const minCount = Math.min(...counts);
+        const maxCount = Math.max(...counts);
+
+        const numThresholds = 6; // 7 colors => 6 thresholds
+        const step = (maxCount - minCount) / numThresholds;
+        const domain = Array.from(
+          { length: numThresholds },
+          (_, i) => minCount + i * step
+        );
+
+        let topo = files[0],
+          data = files[1];
+        let colorScale = d3
+          .scaleThreshold()
+          .domain(domain)
+          .range(d3.schemeBlues[7]);
+        // Draw the map
+        svg
+          .append("g")
+          .selectAll("path")
+          .data(topo.features)
+          .enter()
+          .append("path") // draw each country
+          .attr("d", d3.geoPath().projection(projection))
+          // set the color of each country according to the value in the csv data
+          .attr("fill", (d) => colorScale(getValue(d.id)));
+        function getValue(countryId) {
+          // return groupedByCountry[getCountryISO2(countryId)] || 0; // our csv has 2 code countries, the geojson data has 3 letters, we map them using country-iso
+          return groupedByCountry[countryId.slice(0, 2)];
+        }
+      });
+    </script>
+  </body>
 </html>
