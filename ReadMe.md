@@ -18,6 +18,22 @@ HarmoniViz
     * Lucas LYON
     * Mohamed ELYSALEM
 
+## INSTRUCTIONS
+
+Pour installer les dependences:
+
+```sh
+cd site
+npm install
+```
+
+Pour lancer le site il suffit d'executer (a partir du dossier `site`):
+
+```sh
+npm run start
+
+```
+
 ## PIPELINE
 
 Notre processus suivra ces étapes de base :
@@ -69,6 +85,7 @@ C'est l'objectif de ce projet. Nous visualiserons les données selon quatre mét
 
 ### 1. Carte du Monde des Albums par Pays :
 
+- **Path**: `http://127.0.0.1:8080/map.html`
 - **Visualisation** : Une carte du monde où chaque pays est coloré en fonction du nombre d'albums associés. Les pays sont groupés par le nombre d'albums et lorsqu’on passe la souris sur un pays, toutes les informations correspondantes sont affichées.
 - **Actions possibles** :  
    **Filtre Temporel** : Permet de visualiser les données d'albums pour des années spécifiques, grâce à une ligne de temps située en dessous de la carte.
@@ -95,9 +112,9 @@ C'est l'objectif de ce projet. Nous visualiserons les données selon quatre mét
 - **Utile pour** : professionnels de l'industrie musical / un amateur de musique
 - **Responsable**: Milena KOSTOV
 - **Documentation** :
-  
+
   https://www.anychart.com/products/anychart/gallery/Circle_Packing/100_Richest_People,_According_to_Forbes.php
-  
+
   https://d3-graph-gallery.com/circularpacking.html
 
 ### 3. Graphes pour afficher les collaborations entre les artistes
