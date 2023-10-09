@@ -101,6 +101,12 @@ C'est l'objectif de ce projet. Nous visualiserons les données selon quatre mét
    https://www.d3indepth.com/geographic/  
    https://d3-graph-gallery.com/backgroundmap.html
 
+- TODO
+- [ ] add tooltip window containing other info visible for each country on hover
+- [ ] add color selection palette
+- [ ] add color domain selection including number of limiters (7 domains by default)
+- [ ] ...
+
 ### 2. Compartimentage de cercles pour representer la hierarchisation genre, artiste, album et titre
 
 - **Visualization** : Un comportimentage de cercles ou chaque cercle montre un niveau different (genre, artiste, album, titre).
