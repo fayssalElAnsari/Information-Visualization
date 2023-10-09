@@ -5,16 +5,12 @@
     <title></title>
 
     <!-- import the d3 library -->
-    <!-- <script type="text/javascript" src="https://d3js.org/d3.v5.min.js"></script> -->
     <script type="text/javascript" src="lib/d3.v5.min.js"></script>
-    <!-- <script src="https://unpkg.com/country-iso-3-to-2"></script> -->
-    <!-- <script src="https://unpkg.com/iso-3166-1@1/dist/iso-3166-1.min.js"></script> -->
 
     <!-- <script src="map.js"></script> -->
 
     <!-- style sheet -->
     <link rel="stylesheet" type="text/css" href="style.css" />
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script> -->
   </head>
 
   <body>
@@ -68,7 +64,8 @@
           data = files[1];
         let colorScale = d3
           .scaleThreshold()
-          .domain(domain)
+          // .domain(domain)
+          .domain([1, 10, 100, 1000, 10000, 100000])
           .range(d3.schemeBlues[7]);
         // Draw the map
         svg
@@ -79,10 +76,18 @@
           .append("path") // draw each country
           .attr("d", d3.geoPath().projection(projection))
           // set the color of each country according to the value in the csv data
-          .attr("fill", (d) => colorScale(getValue(d.id)));
+          .attr("fill", (d) => {
+            return colorScale(getValue(d.properties));
+          });
         function getValue(countryId) {
-          // return groupedByCountry[getCountryISO2(countryId)] || 0; // our csv has 2 code countries, the geojson data has 3 letters, we map them using country-iso
-          return groupedByCountry[countryId.slice(0, 2)];
+          console.log(groupedByCountry[countryId]);
+          return (
+            groupedByCountry[countryId.fips_10] ||
+            groupedByCountry[countryId.iso_a2] ||
+            groupedByCountry[countryId.iso_a2_eh] ||
+            groupedByCountry[countryId.wb_a2] ||
+            -1
+          );
         }
       });
     </script>
