@@ -102,6 +102,7 @@ C'est l'objectif de ce projet. Nous visualiserons les données selon quatre mét
    https://d3-graph-gallery.com/backgroundmap.html
 
 - TODO
+- [x] add tooltip to show total number of albums per country
 - [ ] add tooltip window containing other info visible for each country on hover
 - [ ] add color selection palette
 - [ ] add col ain selection including number of limiters (7 domains by default)

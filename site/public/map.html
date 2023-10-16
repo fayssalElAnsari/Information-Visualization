@@ -70,7 +70,7 @@
 
         // create a tooltip
         var Tooltip = d3
-          .select("#div_template")
+          .select("body")
           .append("div")
           .style("opacity", 0)
           .attr("class", "tooltip")
@@ -86,9 +86,12 @@
           d3.select(this).style("stroke", "black").style("opacity", 1);
         };
         var mousemove = function (d) {
-          Tooltip.html("The exact value of<br>this cell is: " + d.value)
-            .style("left", d3.mouse(this)[0] + 70 + "px")
-            .style("top", d3.mouse(this)[1] + "px");
+          // Get the correct value for the current country
+          let value = getValue(d.properties);
+
+          Tooltip.html(value + " albums")
+            .style("left", d3.event.pageX + 10 + "px")
+            .style("top", d3.event.pageY - 28 + "px");
         };
         var mouseleave = function (d) {
           Tooltip.style("opacity", 0);
@@ -118,7 +121,7 @@
             groupedByCountry[countryId.iso_a2] ||
             groupedByCountry[countryId.iso_a2_eh] ||
             groupedByCountry[countryId.wb_a2] ||
-            -1
+            0
           );
         }
       });
