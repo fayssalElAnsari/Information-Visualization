@@ -50,15 +50,10 @@
           </tbody>
         </table>
       </div>
-      <!-- <div id="pagination">
-        <button id="prev">Previous</button>
-        <span id="page-num">1</span>
-        <button id="next">Next</button>
-      </div> -->
     </div>
 
     <script>
-      // const getCountryISO2 = require("country-iso-3-to-2");
+      let lastHoveredCountry = null;
 
       let width = 800,
         height = 600,
@@ -140,6 +135,7 @@
           d3.select(this).style("stroke", "black").style("opacity", 1);
 
           const selectedYear = +d3.select("#year-slider").node().value;
+          lastHoveredCountry = d.properties;
 
           // Filter albums by the selected year
           let albums = getValue(d.properties).filter(
@@ -181,32 +177,26 @@
           });
         }
 
-        d3.select("#year-slider").on("input", function () {
-          const selectedYear = +this.value;
-          d3.select("#selected-year").text(selectedYear);
-
-          const albumsForSelectedYear = currentAlbums.filter((album) => {
-            const albumYear = +album.publicationDate;
-            return albumYear === selectedYear;
-          });
-
-          // Update the map colors
-          mapGroup
-            .selectAll("path")
-            .attr("fill", (d) => colorScale(getValue(d.properties).length));
-
-          updateTable(albumsForSelectedYear);
-        });
-
-        // Draw the map (this part remains unchanged)
+        // // Draw the map (this part remains unchanged)
         const mapGroup = svg.append("g");
+
+        function getTotalAlbums(countryId) {
+          return (
+            groupedByCountry[countryId.fips_10] ||
+            groupedByCountry[countryId.iso_a2] ||
+            groupedByCountry[countryId.iso_a2_eh] ||
+            groupedByCountry[countryId.wb_a2] ||
+            []
+          );
+        }
+
         mapGroup
           .selectAll("path")
           .data(topo.features)
           .enter()
-          .append("path") // draw each country
+          .append("path")
           .attr("d", d3.geoPath().projection(projection))
-          .attr("fill", (d) => colorScale(getValue(d.properties).length))
+          .attr("fill", (d) => colorScale(getTotalAlbums(d.properties).length))
           .on("mouseover", mouseover)
           .on("mousemove", mousemove)
           .on("mouseleave", mouseleave);
@@ -224,6 +214,30 @@
             (album) => +album.publicationDate === selectedYear
           );
         }
+
+        d3.select("#year-slider").on("input", function () {
+          const selectedYear = +this.value;
+          d3.select("#selected-year").text(selectedYear);
+
+          const albumsForSelectedYear = currentAlbums.filter((album) => {
+            const albumYear = +album.publicationDate;
+            return albumYear === selectedYear;
+          });
+
+          mapGroup
+            .selectAll("path")
+            .attr("fill", (d) => colorScale(getValue(d.properties).length));
+          updateTable(albumsForSelectedYear);
+
+          // If a country has been hovered on, update the table for that country
+          if (lastHoveredCountry) {
+            let albums = getValue(lastHoveredCountry).filter(
+              (album) => +album.publicationDate === selectedYear
+            );
+
+            updateAlbumTable(lastHoveredCountry.name, albums);
+          }
+        });
 
         let interval;
         let playing = false;
@@ -269,9 +283,9 @@
         d3.select("#year-slider")
           .attr("min", minYear)
           .attr("max", maxYear)
-          .attr("value", minYear); // Setting the initial value of the slider
+          .attr("value", maxYear - 20); // Setting the initial value of the slider
 
-        d3.select("#selected-year").text(minYear);
+        d3.select("#selected-year").text(maxYear - 20);
       });
     </script>
   </body>
