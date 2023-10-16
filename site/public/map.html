@@ -11,41 +11,62 @@
 
     <!-- style sheet -->
     <link rel="stylesheet" type="text/css" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+    />
   </head>
 
   <body>
-    <div id="albumTableContainer">
-      <h3 id="countryName">Albums</h3>
-      <table id="albumTable">
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Publication Date</th>
-            <th>Length</th>
-          </tr>
-        </thead>
-        <tbody id="albumList">
-          <!-- Album rows will be populated here -->
-        </tbody>
-      </table>
-    </div>
+    <div id="contentContainer">
+      <div id="map-container">
+        <svg id="scene">...</svg>
+        <div id="year-slider-container">
+          <button id="play-button"><i class="fas fa-play"></i></button>
 
-    <svg id="scene">
-      <!-- <g id="links"></g>
-      <g id="labels"></g>
-      <g id="nodes"></g> -->
-    </svg>
+          <input
+            type="range"
+            id="year-slider"
+            min="1900"
+            max="2023"
+            value="2023"
+          />
+          <span id="selected-year">2023</span>
+        </div>
+      </div>
+
+      <div id="albumTableContainer">
+        <h3 id="countryName">Albums</h3>
+        <table id="albumTable">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Publication Date</th>
+              <th>Length</th>
+            </tr>
+          </thead>
+          <tbody id="albumList">
+            <!-- Album rows will be populated here -->
+          </tbody>
+        </table>
+      </div>
+      <!-- <div id="pagination">
+        <button id="prev">Previous</button>
+        <span id="page-num">1</span>
+        <button id="next">Next</button>
+      </div> -->
+    </div>
 
     <script>
       // const getCountryISO2 = require("country-iso-3-to-2");
 
-      let width = 1250,
-        height = 1050,
+      let width = 800,
+        height = 600,
         svg = d3.select("#scene").attr("width", width).attr("height", height);
 
       let projection = d3
         .geoMercator()
-        .scale(200)
+        .scale(150) // adjusted from 200
         .translate([width / 2, height / 2]);
 
       // Load external data
@@ -63,6 +84,8 @@
           accumulator[record.country].push(record);
           return accumulator;
         }, {});
+
+        const currentAlbums = files[1];
 
         const counts = Object.values(groupedByCountry);
         const minCount = Math.min(...counts);
@@ -116,8 +139,13 @@
           Tooltip.style("opacity", 1);
           d3.select(this).style("stroke", "black").style("opacity", 1);
 
-          // Fetch albums and update the table
-          let albums = getValue(d.properties);
+          const selectedYear = +d3.select("#year-slider").node().value;
+
+          // Filter albums by the selected year
+          let albums = getValue(d.properties).filter(
+            (album) => +album.publicationDate === selectedYear
+          );
+
           updateAlbumTable(d.properties.name, albums);
         };
 
@@ -135,31 +163,115 @@
           d3.select(this).style("stroke", "none").style("opacity", 0.8);
         };
 
-        // Draw the map
-        svg
-          .append("g")
+        function updateTable(albums) {
+          // Assuming you have an existing table body selection:
+          const tbody = d3.select("#albums-table tbody");
+
+          // Clear the table
+          tbody.html("");
+
+          // Append rows for each album
+          albums.forEach((album) => {
+            const row = tbody.append("tr");
+
+            row.append("td").text(album.title);
+            row.append("td").text(album.country);
+            row.append("td").text(album.publicationDate);
+            row.append("td").text(album.length);
+          });
+        }
+
+        d3.select("#year-slider").on("input", function () {
+          const selectedYear = +this.value;
+          d3.select("#selected-year").text(selectedYear);
+
+          const albumsForSelectedYear = currentAlbums.filter((album) => {
+            const albumYear = +album.publicationDate;
+            return albumYear === selectedYear;
+          });
+
+          // Update the map colors
+          mapGroup
+            .selectAll("path")
+            .attr("fill", (d) => colorScale(getValue(d.properties).length));
+
+          updateTable(albumsForSelectedYear);
+        });
+
+        // Draw the map (this part remains unchanged)
+        const mapGroup = svg.append("g");
+        mapGroup
           .selectAll("path")
           .data(topo.features)
           .enter()
           .append("path") // draw each country
           .attr("d", d3.geoPath().projection(projection))
-          // set the color of each country according to the value in the csv data
-          .attr("fill", (d) => {
-            return colorScale(getValue(d.properties));
-          })
+          .attr("fill", (d) => colorScale(getValue(d.properties).length))
           .on("mouseover", mouseover)
           .on("mousemove", mousemove)
           .on("mouseleave", mouseleave);
 
+        // Modified getValue function to consider the selected year
         function getValue(countryId) {
-          return (
+          const selectedYear = +d3.select("#year-slider").node().value;
+          const allAlbums =
             groupedByCountry[countryId.fips_10] ||
             groupedByCountry[countryId.iso_a2] ||
             groupedByCountry[countryId.iso_a2_eh] ||
             groupedByCountry[countryId.wb_a2] ||
-            []
+            [];
+          return allAlbums.filter(
+            (album) => +album.publicationDate === selectedYear
           );
         }
+
+        let interval;
+        let playing = false;
+
+        d3.select("#play-button").on("click", function () {
+          if (playing) {
+            clearInterval(interval); // Stop the playback
+            d3.select(this).text("Play"); // Update button text
+          } else {
+            const slider = d3.select("#year-slider").node();
+            const maxYear = +slider.getAttribute("max");
+
+            interval = setInterval(() => {
+              let currentYear = +slider.value;
+              currentYear++; // Increment year
+
+              if (currentYear > maxYear) {
+                clearInterval(interval); // Stop at maxYear
+                d3.select("#play-button").text("Play");
+              } else {
+                slider.value = currentYear;
+                d3.select("#selected-year").text(currentYear);
+                // Trigger the input event to update the map and table
+                slider.dispatchEvent(new Event("input"));
+              }
+            }, 350);
+
+            d3.select(this).text("Pause"); // Update button text
+          }
+
+          playing = !playing; // Toggle playing state
+        });
+
+        // Extracting years from the dataset
+        let years = files[1]
+          .map((record) => +record.publicationDate)
+          .filter((year) => year !== 0); // Exclude the year 0
+
+        // Determine the min and max years
+        const minYear = Math.min(...years);
+        const maxYear = Math.max(...years);
+
+        d3.select("#year-slider")
+          .attr("min", minYear)
+          .attr("max", maxYear)
+          .attr("value", minYear); // Setting the initial value of the slider
+
+        d3.select("#selected-year").text(minYear);
       });
     </script>
   </body>

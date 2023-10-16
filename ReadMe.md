@@ -103,10 +103,14 @@ C'est l'objectif de ce projet. Nous visualiserons les données selon quatre mét
 
 - TODO
 - [x] add tooltip to show total number of albums per country
-- [ ] add tooltip window containing other info visible for each country on hover
+- [x] add a timeline underneath the map that could be activated or deactivated (or animated) for each year
+- [x] add table containing other info visible for each country on hover
 - [ ] add color selection palette
-- [ ] add col ain selection including number of limiters (7 domains by default)
+- [ ] add col selection including number of limiters (7 domains by default)
 - [ ] add filters for which info to keep
+- [ ] add a legend for color intervals and other elements on the map
+- [ ] optimize for speed
+- [ ] add pagination to info table
 - [ ] ...
 
 ### 2. Compartimentage de cercles pour representer la hierarchisation genre, artiste, album et titre

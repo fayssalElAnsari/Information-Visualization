@@ -11,16 +11,24 @@
   opacity: 0.8;
 }
 
+#contentContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+#scene {
+  flex: 0 0 auto;
+}
+
 #albumTableContainer {
-  width: 300px;
-  height: 400px;
-  overflow-y: scroll;
-  border: 1px solid #ddd;
+  flex: 1;
+  margin-left: 20px;
 }
 
 table {
-  border-collapse: collapse;
   width: 100%;
+  border-collapse: collapse;
 }
 
 th,
@@ -36,4 +44,41 @@ tr:nth-child(even) {
 th {
   background-color: #4caf50;
   color: white;
+}
+
+#pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+}
+
+#prev,
+#next {
+  padding: 5px 10px;
+  margin: 0 10px;
+  cursor: pointer;
+}
+
+#map-container {
+  display: flex;
+  flex-direction: column; /* Stack children (SVG and slider) vertically */
+  align-items: center; /* Center children horizontally */
+  margin-bottom: 20px; /* Optional: give some spacing below the container */
+}
+
+#scene {
+  margin-bottom: 10px; /* Space between the map and the slider */
+}
+
+#year-slider-container {
+  display: flex;
+  align-items: center; /* Center the slider and label vertically */
+  justify-content: center; /* Center the slider and label horizontally */
+  width: 100%; /* Take full width of the parent container */
+}
+
+#year-slider {
+  flex-grow: 1; /* Allow the slider to take the available space */
+  margin-right: 10px; /* Space between the slider and its label */
 }
