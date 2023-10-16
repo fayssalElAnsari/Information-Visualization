@@ -14,6 +14,22 @@
   </head>
 
   <body>
+    <div id="albumTableContainer">
+      <h3 id="countryName">Albums</h3>
+      <table id="albumTable">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Publication Date</th>
+            <th>Length</th>
+          </tr>
+        </thead>
+        <tbody id="albumList">
+          <!-- Album rows will be populated here -->
+        </tbody>
+      </table>
+    </div>
+
     <svg id="scene">
       <!-- <g id="links"></g>
       <g id="labels"></g>
@@ -41,11 +57,10 @@
         ),
       ]).then((files) => {
         const groupedByCountry = files[1].reduce((accumulator, record) => {
-          if (accumulator[record.country]) {
-            accumulator[record.country]++;
-          } else {
-            accumulator[record.country] = 1;
+          if (!accumulator[record.country]) {
+            accumulator[record.country] = [];
           }
+          accumulator[record.country].push(record);
           return accumulator;
         }, {});
 
@@ -80,19 +95,41 @@
           .style("border-radius", "5px")
           .style("padding", "5px");
 
+        function updateAlbumTable(countryName, albums) {
+          // Set country name as table title
+          d3.select("#countryName").text(`Albums from ${countryName}`);
+
+          // Populate the table
+          let tbody = d3.select("#albumList");
+          tbody.html(""); // Clear existing rows
+
+          albums.forEach((album) => {
+            let row = tbody.append("tr");
+            row.append("td").text(album.title);
+            row.append("td").text(album.publicationDate || "Unknown");
+            row.append("td").text(album.length || "Unknown");
+          });
+        }
+
         // Three function that changes the tooltip when user hover / move / leave a cell
         var mouseover = function (d) {
           Tooltip.style("opacity", 1);
           d3.select(this).style("stroke", "black").style("opacity", 1);
+
+          // Fetch albums and update the table
+          let albums = getValue(d.properties);
+          updateAlbumTable(d.properties.name, albums);
         };
+
         var mousemove = function (d) {
           // Get the correct value for the current country
-          let value = getValue(d.properties);
+          let value = getValue(d.properties).length;
 
           Tooltip.html(value + " albums")
             .style("left", d3.event.pageX + 10 + "px")
             .style("top", d3.event.pageY - 28 + "px");
         };
+
         var mouseleave = function (d) {
           Tooltip.style("opacity", 0);
           d3.select(this).style("stroke", "none").style("opacity", 0.8);
@@ -115,13 +152,12 @@
           .on("mouseleave", mouseleave);
 
         function getValue(countryId) {
-          console.log(groupedByCountry[countryId]);
           return (
             groupedByCountry[countryId.fips_10] ||
             groupedByCountry[countryId.iso_a2] ||
             groupedByCountry[countryId.iso_a2_eh] ||
             groupedByCountry[countryId.wb_a2] ||
-            0
+            []
           );
         }
       });
