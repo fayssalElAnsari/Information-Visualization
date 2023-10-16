@@ -67,6 +67,34 @@
           // .domain(domain)
           .domain([1, 10, 100, 1000, 10000, 100000])
           .range(d3.schemeBlues[7]);
+
+        // create a tooltip
+        var Tooltip = d3
+          .select("#div_template")
+          .append("div")
+          .style("opacity", 0)
+          .attr("class", "tooltip")
+          .style("background-color", "white")
+          .style("border", "solid")
+          .style("border-width", "2px")
+          .style("border-radius", "5px")
+          .style("padding", "5px");
+
+        // Three function that changes the tooltip when user hover / move / leave a cell
+        var mouseover = function (d) {
+          Tooltip.style("opacity", 1);
+          d3.select(this).style("stroke", "black").style("opacity", 1);
+        };
+        var mousemove = function (d) {
+          Tooltip.html("The exact value of<br>this cell is: " + d.value)
+            .style("left", d3.mouse(this)[0] + 70 + "px")
+            .style("top", d3.mouse(this)[1] + "px");
+        };
+        var mouseleave = function (d) {
+          Tooltip.style("opacity", 0);
+          d3.select(this).style("stroke", "none").style("opacity", 0.8);
+        };
+
         // Draw the map
         svg
           .append("g")
@@ -78,7 +106,11 @@
           // set the color of each country according to the value in the csv data
           .attr("fill", (d) => {
             return colorScale(getValue(d.properties));
-          });
+          })
+          .on("mouseover", mouseover)
+          .on("mousemove", mousemove)
+          .on("mouseleave", mouseleave);
+
         function getValue(countryId) {
           console.log(groupedByCountry[countryId]);
           return (

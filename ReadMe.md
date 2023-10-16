@@ -104,7 +104,8 @@ C'est l'objectif de ce projet. Nous visualiserons les données selon quatre mét
 - TODO
 - [ ] add tooltip window containing other info visible for each country on hover
 - [ ] add color selection palette
-- [ ] add color domain selection including number of limiters (7 domains by default)
+- [ ] add col ain selection including number of limiters (7 domains by default)
+- [ ] add filters for which info to keep
 - [ ] ...
 
 ### 2. Compartimentage de cercles pour representer la hierarchisation genre, artiste, album et titre

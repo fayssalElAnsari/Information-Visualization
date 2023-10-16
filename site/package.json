@@ -4,7 +4,6 @@
   "description": "",
   "main": "script.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server.js",
     "browser-sync": "browser-sync start --proxy 'localhost:3002' --files 'public/*, public/**/*'",
     "dev": "concurrently \"npm start\" \"npm run browser-sync\""
