@@ -87,19 +87,33 @@
         <svg width="800" height="400" id="scatter-plot"></svg>
     </div>
 
-     <!-- Fenêtre modale -->
+    <!-- Fenêtre modale -->
     <!--  <button id="openModalBtn">Voir les détails de l'artiste</button> -->
-    <button class="close" id="closeButton">&times;</button>
-   
+    <!-- <button class="close" id="closeButton">&times;</button> -->
+
     <div id="artistModal" class="modal">
         <div class="modal-content">
-            <span class="close">&times;</span>
+            <span class="close">&times; Fermer</span>
             <h2>Détails de l'artiste</h2>
             <div id="artistDetails">
-                <!-- Les détails de l'artiste seront affichés ici -->
+                <table class="album-table">
+                    <thead>
+                        <tr>
+                            <th>Date de publication</th>
+                            <th>Titre</th>
+                            <th>Deezer fans</th>
+                            <th>Genre</th>
+                            <th>Langue</th>
+                            <th>URL</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Les données des albums seront ajoutées ici -->
+                    </tbody>
+                </table>
             </div>
         </div>
-    </div> 
+    </div>
     <script src="NuagePoints.js"></script>
 </body>
 
