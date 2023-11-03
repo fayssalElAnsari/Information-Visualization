@@ -15,12 +15,70 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
     />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+      crossorigin="anonymous"
+    />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css"
+    />
   </head>
 
   <body>
     <div id="contentContainer">
       <div id="map-container">
-        <svg id="scene">...</svg>
+        <!-- New container for map and info card -->
+        <div id="map-and-info">
+          <!-- Info Icon -->
+          <i
+            class="fas fa-info-circle"
+            id="info-icon"
+            style="
+              position: absolute;
+              top: 10px;
+              left: 10px;
+              z-index: 10;
+              cursor: pointer;
+            "
+          ></i>
+
+          <!-- Initially hidden card -->
+          <div
+            id="info-card"
+            class="card"
+            style="
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              display: none;
+              z-index: 5;
+              width: 800px;
+            "
+          >
+            <div class="card-body">
+              <p class="card-text">
+                Une carte du monde où chaque pays est coloré en fonction du
+                nombre d'albums associés. Les pays sont groupés par le nombre
+                d'albums et lorsqu’on passe la souris sur un pays, toutes les
+                informations correspondantes sont affichées.
+              </p>
+            </div>
+          </div>
+
+          <!-- Your Map Here (SVG) -->
+          <svg id="scene" viewBox="0 0 800 600">...</svg>
+        </div>
+
         <div id="year-slider-container">
           <button id="play-button"><i class="fas fa-play"></i></button>
 
@@ -37,7 +95,11 @@
 
       <div id="albumTableContainer">
         <h3 id="countryName">Albums</h3>
-        <table id="albumTable">
+        <table
+          class="table table-striped table-bordered table-sm"
+          cellspacing="0"
+          id="albumTable"
+        >
           <thead>
             <tr>
               <th>Title</th>
@@ -53,6 +115,25 @@
     </div>
 
     <script>
+      $(document).ready(function () {
+        $("#albumTable").DataTable({
+          paging: true, // Enable pagination
+          searching: true, // Enable global searching
+          info: true, // Will show "Showing 1 to X of X entries"
+          pagingType: "full_numbers", // "simple" option for 'Previous' and 'Next' buttons only
+          pageLength: 10, // Set the number of records per page
+          lengthChange: true, // Allow the user to change the number of records per page
+          lengthMenu: [5, 10, 25, 50, 100], // Specify the options for page length menu
+          columnDefs: [
+            { searchable: true, targets: 0 }, // Make the first column searchable
+            { searchable: true, targets: 1 }, // Make the second column searchable
+            { searchable: true, targets: 2 }, // Make the third column searchable
+          ],
+        });
+
+        $(".dataTables_length").addClass("bs-select");
+      });
+
       let lastHoveredCountry = null;
 
       let width = 800,
@@ -113,20 +194,48 @@
           .style("border-radius", "5px")
           .style("padding", "5px");
 
+        function updateTable(albums) {
+          // Correct the table id to match the existing one
+          const tbody = d3.select("#albumTable tbody");
+
+          // Clear the table
+          tbody.html("");
+
+          // Append rows for each album
+          albums.forEach((album) => {
+            const row = tbody.append("tr");
+
+            row.append("td").text(album.title);
+            row.append("td").text(album.country);
+            row.append("td").text(album.publicationDate);
+            row.append("td").text(album.length);
+          });
+
+          // Re-initialize the DataTable for the updated content
+          $("#albumTable").DataTable().draw();
+        }
+
         function updateAlbumTable(countryName, albums) {
           // Set country name as table title
           d3.select("#countryName").text(`Albums from ${countryName}`);
 
-          // Populate the table
-          let tbody = d3.select("#albumList");
-          tbody.html(""); // Clear existing rows
+          // Get the DataTable instance
+          let table = $("#albumTable").DataTable();
 
+          // Clear the existing data in the DataTable
+          table.clear();
+
+          // Add new data to the DataTable
           albums.forEach((album) => {
-            let row = tbody.append("tr");
-            row.append("td").text(album.title);
-            row.append("td").text(album.publicationDate || "Unknown");
-            row.append("td").text(album.length || "Unknown");
+            table.row.add([
+              album.title,
+              album.publicationDate || "Unknown",
+              album.length || "Unknown",
+            ]);
           });
+
+          // Redraw the table to reflect changes
+          table.draw();
         }
 
         // Three function that changes the tooltip when user hover / move / leave a cell
@@ -158,24 +267,6 @@
           Tooltip.style("opacity", 0);
           d3.select(this).style("stroke", "none").style("opacity", 0.8);
         };
-
-        function updateTable(albums) {
-          // Assuming you have an existing table body selection:
-          const tbody = d3.select("#albums-table tbody");
-
-          // Clear the table
-          tbody.html("");
-
-          // Append rows for each album
-          albums.forEach((album) => {
-            const row = tbody.append("tr");
-
-            row.append("td").text(album.title);
-            row.append("td").text(album.country);
-            row.append("td").text(album.publicationDate);
-            row.append("td").text(album.length);
-          });
-        }
 
         // // Draw the map (this part remains unchanged)
         const mapGroup = svg.append("g");
@@ -286,6 +377,19 @@
           .attr("value", maxYear - 20); // Setting the initial value of the slider
 
         d3.select("#selected-year").text(maxYear - 20);
+
+        // JavaScript code to handle the click event of the info icon
+        document
+          .getElementById("info-icon")
+          .addEventListener("click", function () {
+            var card = document.getElementById("info-card");
+            // This will toggle the display property between none and block
+            if (card.style.display === "none") {
+              card.style.display = "block";
+            } else {
+              card.style.display = "none";
+            }
+          });
       });
     </script>
   </body>

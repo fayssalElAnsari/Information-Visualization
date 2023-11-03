@@ -1,3 +1,21 @@
+body {
+  padding-top: 20px; /* Padding at the top */
+  padding-bottom: 20px; /* Padding at the bottom */
+  padding-left: 10px; /* Padding on the left */
+  padding-right: 10px; /* Padding on the right */
+}
+
+html,
+body {
+  box-sizing: border-box; /* Include padding and border in the element's size */
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit; /* Inherit box-sizing from the html and body element */
+}
+
 #map {
   width: 800px;
   height: 400px;
@@ -42,8 +60,13 @@ tr:nth-child(even) {
 }
 
 th {
-  background-color: #4caf50;
-  color: white;
+  background-color: #4caf50; /* Dark green background */
+  color: white; /* White text */
+}
+
+#albumTable th {
+  background-color: #4caf50; /* Dark green background */
+  color: white; /* White text */
 }
 
 #pagination {
@@ -81,4 +104,44 @@ th {
 #year-slider {
   flex-grow: 1; /* Allow the slider to take the available space */
   margin-right: 10px; /* Space between the slider and its label */
+}
+
+#info-icon {
+  font-size: 24px;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  cursor: pointer;
+}
+
+#info-card {
+  width: 800px;
+  display: none; /* Hidden by default */
+}
+
+#map-and-info {
+  position: relative;
+}
+
+#info-icon {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 10;
+  cursor: pointer;
+}
+
+#info-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: none;
+  z-index: 5;
+  width: 800px;
+}
+
+#year-slider-container {
+  position: relative;
+  z-index: 1;
 }
