@@ -196,3 +196,7 @@ th {
   text-decoration: none;
   cursor: pointer;
 }
+
+.cover-thumbnail {
+  cursor: pointer;
+}
