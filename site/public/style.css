@@ -64,6 +64,10 @@ th {
   color: white; /* White text */
 }
 
+#albumList {
+  min-height: 500px;
+}
+
 #albumTable th {
   background-color: #4caf50; /* Dark green background */
   color: white; /* White text */
