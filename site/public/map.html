@@ -62,7 +62,6 @@
               transform: translate(-50%, -50%);
               display: none;
               z-index: 5;
-              width: 800px;
             "
           >
             <div class="card-body">
@@ -76,7 +75,7 @@
           </div>
 
           <!-- Your Map Here (SVG) -->
-          <svg id="scene" viewBox="0 0 800 600">...</svg>
+          <svg id="scene" viewBox="0 0 800 600"></svg>
         </div>
 
         <div id="year-slider-container">
@@ -142,8 +141,10 @@
 
       let projection = d3
         .geoMercator()
-        .scale(150) // adjusted from 200
+        .scale(100) // adjusted from 200
         .translate([width / 2, height / 2]);
+
+      let path = d3.geoPath().projection(projection);
 
       // Load external data
       Promise.all([
@@ -153,6 +154,19 @@
           "data/wasabi_albums_pre-processed.csv"
         ),
       ]).then((files) => {
+        // files[0] will be your GeoJSON object
+        let geojson = files[0];
+
+        // Fit the projection to the size of the SVG container
+        projection.fitSize([width, height], geojson);
+
+        // Use the updated projection to create your map path
+        svg
+          .append("path")
+          .datum(geojson)
+          .attr("d", path)
+          .attr("class", "feature");
+
         const groupedByCountry = files[1].reduce((accumulator, record) => {
           if (!accumulator[record.country]) {
             accumulator[record.country] = [];
