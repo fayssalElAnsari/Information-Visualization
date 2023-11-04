@@ -100,14 +100,16 @@
           id="albumTable"
         >
           <colgroup>
-            <col style="width: 50%" />
+            <col style="width: 10%" />
+            <col style="width: 40%" />
             <col style="width: 25%" />
             <col style="width: 25%" />
           </colgroup>
           <thead>
             <tr>
+              <th>Cover</th>
               <th>Title</th>
-              <th>Publication Date</th>
+              <th>Genre</th>
               <th>Length</th>
             </tr>
           </thead>
@@ -115,6 +117,13 @@
             <!-- Album rows will be populated here -->
           </tbody>
         </table>
+      </div>
+
+      <!-- The Modal -->
+      <div id="myModal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="img01" />
+        <div id="caption"></div>
       </div>
     </div>
 
@@ -224,10 +233,13 @@
           albums.forEach((album) => {
             const row = tbody.append("tr");
 
+            row.append("td").text(album.cover);
             row.append("td").text(album.title);
             row.append("td").text(album.country);
             row.append("td").text(album.publicationDate);
+            row.append("td").text(album.genre);
             row.append("td").text(album.length);
+            row.append("td").text(album.cover);
           });
 
           // Re-initialize the DataTable for the updated content
@@ -246,11 +258,25 @@
 
           // Add new data to the DataTable
           albums.forEach((album) => {
-            table.row.add([
-              album.title,
-              album.publicationDate || "Unknown",
-              album.length || "Unknown",
-            ]);
+            let coverImageHtml = "No Cover"; // Default text
+            try {
+              if (album.cover) {
+                let coverObject = JSON.parse(album.cover);
+                // Add a data-attribute to store the entire cover object for later use
+                coverImageHtml = `<img src="${coverObject.standard}" alt="Cover" class="cover-thumbnail" style="width:50px; height:auto;" data-cover-object='${album.cover}'>`;
+              }
+            } catch (e) {
+              console.error("Error parsing album cover JSON", e);
+            }
+
+            table.row
+              .add([
+                coverImageHtml, // Cover image cell
+                album.title,
+                album.genre || "Unknown",
+                album.length || "Unknown",
+              ])
+              .draw(false);
           });
 
           // Redraw the table to reflect changes
@@ -409,6 +435,32 @@
               card.style.display = "none";
             }
           });
+      });
+
+      $(document).ready(function () {
+        // Assuming your DataTable is already initialized and the rows are added
+
+        // When the user clicks on a thumbnail
+        $("#albumTable tbody").on("click", "img.cover-thumbnail", function () {
+          var modal = document.getElementById("myModal");
+          var modalImg = document.getElementById("img01");
+          var captionText = document.getElementById("caption");
+
+          // Assuming the cover URL object has already been parsed and added as data-attribute
+          var albumCoverObject = $(this).data("coverObject");
+
+          modal.style.display = "block";
+          modalImg.src = albumCoverObject.xl; // Use the xl image URL
+          captionText.innerHTML = this.alt;
+
+          // Get the <span> element that closes the modal
+          var span = document.getElementsByClassName("close")[0];
+
+          // When the user clicks on <span> (x), close the modal
+          span.onclick = function () {
+            modal.style.display = "none";
+          };
+        });
       });
     </script>
   </body>
