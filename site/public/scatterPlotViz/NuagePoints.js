@@ -1,6 +1,6 @@
 // Fonction pour charger les données des artistes
 function loadArtistData() {
-    d3.csv('data/artists_cleaned_MO.csv').then(function (data) {
+    d3.csv('../data/artists_cleaned_MO.csv').then(function (data) {
         // Convertir les données en nombres si nécessaire
         // data.forEach(function (d) {
         //     d.lifeSpanBegin = +d.lifeSpanBegin;
@@ -169,7 +169,7 @@ function setupZoomAndModal(data) {
         document.getElementById("artistDetails").innerHTML = `<h3> NOM: ${artistName}</h3>`;
 
         // Utilisez D3.js pour lire le fichier CSV des albums associés à l'artiste
-        d3.csv("data/albums_cleaned_MO.csv").then(function (albumData) {
+        d3.csv("../data/albums_cleaned_MO.csv").then(function (albumData) {
             // Vous avez maintenant accès aux données des albums sous forme de tableau d'objets
             // Filtrez les albums associés à l'artiste sélectionné (artistID)
             const selectedArtistAlbums = albumData.filter(function (album) {
