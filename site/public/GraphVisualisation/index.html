@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <title>Data visualitation project</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="stylesheet" href="./css/style.css">    
 </head>
 
@@ -13,20 +14,22 @@
     <div class="checkboxes">
         <div class="checkbox">
             <input type="checkbox" id="collab" name="collab" value="collab" onchange="toggleCollabLink(this)" checked>
-            <label for="collab">Collaborative</label>
+            <label for="collab">Show collaboration link</label>
         </div>
         <div class="checkbox">
             <input type="checkbox" id="participate" name="participate" value="participate" onchange="toggleParticipateLink(this)" checked>
-            <label for="participate">Participative</label>
+            <label for="participate">Show participation link</label>
         </div>
+
+        <select name="genre-select" id="genre-select" onchange="filterGenre(this.value)">
+            <option value="all" selected>All</option>
+            <!-- Options build by main -->
+        </select>
     </div>
 
 
 
-    <select name="genre-select" id="genre-select" onchange="filterGenre(this.value)">
-        <option value="all" selected>All</option>
-        <!-- Options build by main -->
-    </select>
+    
     <div class="tooltip" style="display: none;"></div>
 
 
