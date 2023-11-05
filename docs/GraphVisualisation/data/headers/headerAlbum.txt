@@ -1,0 +1,34 @@
+_id
+genre
+id_artist XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+length
+name XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX (artist name)
+publicationDate
+rdf
+title
+urlAlbum
+urlAllmusic
+urlAmazon
+urlDiscogs
+urlITunes
+urlMusicBrainz
+urlSpotify
+urlWikipedia
+id_album_deezer
+urlDeezer
+cover
+cover.big
+cover.medium
+cover.small
+cover.standard
+cover.xl
+deezerFans
+explicitLyrics
+upc
+barcode
+country
+dateRelease
+disambiguation
+id_album_musicbrainz
+language
+id_album_discogs

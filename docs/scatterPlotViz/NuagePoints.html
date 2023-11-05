@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="stylesNuage.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="filters">
+            <label for="gender-filter">Filtrer par genre :</label>
+            <select id="gender-filter">
+                <option value="all">Tous</option>
+                <option value="Female">Femme</option>
+                <option value="Male">Homme</option>
+            </select>
+
+            <label for="country-filter">Filtrer par contry de naissance :</label>
+            <select id="country-filter">
+                <option value="all">Tous les contry</option>
+                <option value="United States">États-Unis</option>
+                <option value="United Kingdom">Royaume-Uni</option>
+                <option value="Atlanta">Atlanta</option>
+                <option value="Australia">Australie</option>
+                <option value="Austria">Autriche</option>
+                <option value="Basildon">Basildon</option>
+                <option value="Belgium">Belgique</option>
+                <option value="Belize">Belize</option>
+                <option value="Berlin">Berlin</option>
+                <option value="Beverly Hills">Beverly Hills</option>
+                <option value="Brazil">Brésil</option>
+                <option value="Canada">Canada</option>
+                <option value="Cologne">Cologne</option>
+                <option value="Colombia">Colombie</option>
+                <option value="Denmark">Danemark</option>
+                <option value="East Germany">Allemagne de l'Est</option>
+                <option value="Estonia">Estonie</option>
+                <option value="Finland">Finlande</option>
+                <option value="France">France</option>
+                <option value="Germany">Allemagne</option>
+                <option value="Greece">Grèce</option>
+                <option value="Hammerfest">Hammerfest</option>
+                <option value="Hendersonville">Hendersonville</option>
+                <option value="Houston">Houston</option>
+                <option value="Ireland">Irlande</option>
+                <option value="Italy">Italie</option>
+                <option value="Jamaica">Jamaïque</option>
+                <option value="Japan">Japon</option>
+                <option value="London">Londres</option>
+                <option value="Los Angeles">Los Angeles</option>
+                <option value="Mexico">Mexique</option>
+                <option value="Miami">Miami</option>
+                <option value="Miami Beach">Miami Beach</option>
+                <option value="Minety">Minety</option>
+                <option value="Netherlands">Pays-Bas</option>
+                <option value="New York">New York</option>
+                <option value="New Zealand">Nouvelle-Zélande</option>
+                <option value="Nice">Nice</option>
+                <option value="Nigeria">Nigéria</option>
+                <option value="Norway">Norvège</option>
+                <option value="Nova Scotia">Nouvelle-Écosse</option>
+                <option value="Palos Verdes Estates">Palos Verdes Estates</option>
+                <option value="Philippines">Philippines</option>
+                <option value="Poland">Pologne</option>
+                <option value="Puerto Rico">Porto Rico</option>
+                <option value="Richmond upon Thames">Richmond upon Thames</option>
+                <option value="Rochester">Rochester</option>
+                <option value="Russia">Russie</option>
+                <option value="Santa Monica">Santa Monica</option>
+                <option value="Spain">Espagne</option>
+                <option value="Stephenville">Stephenville</option>
+                <option value="Sweden">Suède</option>
+                <option value="Switzerland">Suisse</option>
+                <option value="Sydney">Sydney</option>
+                <option value="Toronto">Toronto</option>
+                <option value="Ukraine">Ukraine</option>
+                <option value="United Kingdom">Royaume-Uni</option>
+                <option value="United States">États-Unis</option>
+                <option value="Ventura">Ventura</option>
+                <option value="Waller">Waller</option>
+            </select>
+        </div>
+
+        <svg width="800" height="400" id="scatter-plot"></svg>
+    </div>
+
+    <!-- Fenêtre modale -->
+    <!--  <button id="openModalBtn">Voir les détails de l'artiste</button> -->
+    <!-- <button class="close" id="closeButton">&times;</button> -->
+
+    <div id="artistModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times; Fermer</span>
+            <h2>Détails de l'artiste</h2>
+            <div id="artistDetails">
+                <table class="album-table">
+                    <thead>
+                        <tr>
+                            <th>Date de publication</th>
+                            <th>Titre</th>
+                            <th>Deezer fans</th>
+                            <th>Genre</th>
+                            <th>Langue</th>
+                            <th>URL</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Les données des albums seront ajoutées ici -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script src="NuagePoints.js"></script>
+</body>
+
+</html>

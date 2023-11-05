@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title></title>
+
+    <!-- import the d3 library -->
+    <script type="text/javascript" src="../lib/d3.v5.min.js"></script>
+
+    <!-- <script src="map.js"></script> -->
+
+    <!-- style sheet -->
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+    />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+      crossorigin="anonymous"
+    />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css"
+    />
+  </head>
+
+  <body>
+    <div id="contentContainer">
+      <div id="map-container">
+        <!-- New container for map and info card -->
+        <div id="map-and-info">
+          <!-- Info Icon -->
+          <i
+            class="fas fa-info-circle"
+            id="info-icon"
+            style="
+              position: absolute;
+              top: 10px;
+              left: 10px;
+              z-index: 10;
+              cursor: pointer;
+            "
+          ></i>
+
+          <!-- Initially hidden card -->
+          <div
+            id="info-card"
+            class="card"
+            style="
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              display: none;
+              z-index: 5;
+            "
+          >
+            <div class="card-body">
+              <p class="card-text">
+                Une carte du monde où chaque pays est coloré en fonction du
+                nombre d'albums associés. Les pays sont groupés par le nombre
+                d'albums et lorsqu’on passe la souris sur un pays, toutes les
+                informations correspondantes sont affichées.
+              </p>
+            </div>
+          </div>
+
+          <!-- Your Map Here (SVG) -->
+          <svg id="scene" viewBox="0 0 800 600"></svg>
+        </div>
+
+        <div id="year-slider-container">
+          <button id="play-button"><i class="fas fa-play"></i></button>
+
+          <input
+            type="range"
+            id="year-slider"
+            min="1900"
+            max="2023"
+            value="2023"
+          />
+          <span id="selected-year">2023</span>
+        </div>
+      </div>
+
+      <div id="albumTableContainer">
+        <h3 id="countryName">Albums</h3>
+        <table
+          class="table table-striped table-bordered table-sm"
+          cellspacing="0"
+          id="albumTable"
+        >
+          <colgroup>
+            <col style="width: 10%" />
+            <col style="width: 40%" />
+            <col style="width: 25%" />
+            <col style="width: 25%" />
+          </colgroup>
+          <thead>
+            <tr>
+              <th>Cover</th>
+              <th>Title</th>
+              <th>Genre</th>
+              <th>Length</th>
+            </tr>
+          </thead>
+          <tbody id="albumList">
+            <!-- Album rows will be populated here -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- The Modal -->
+      <div id="myModal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="img01" />
+        <div id="caption"></div>
+      </div>
+    </div>
+
+    <script>
+      $(document).ready(function () {
+        $("#albumTable").DataTable({
+          paging: true, // Enable pagination
+          searching: true, // Enable global searching
+          info: true, // Will show "Showing 1 to X of X entries"
+          pagingType: "full_numbers", // "simple" option for 'Previous' and 'Next' buttons only
+          pageLength: 10, // Set the number of records per page
+          lengthChange: true, // Allow the user to change the number of records per page
+          lengthMenu: [5, 10, 25, 50, 100], // Specify the options for page length menu
+          columnDefs: [
+            { searchable: true, targets: 0 }, // Make the first column searchable
+            { searchable: true, targets: 1 }, // Make the second column searchable
+            { searchable: true, targets: 2 }, // Make the third column searchable
+          ],
+        });
+
+        $(".dataTables_length").addClass("bs-select");
+      });
+
+      let lastHoveredCountry = null;
+
+      let width = 800,
+        height = 600,
+        svg = d3.select("#scene").attr("width", width).attr("height", height);
+
+      let projection = d3
+        .geoMercator()
+        .scale(100) // adjusted from 200
+        .translate([width / 2, height / 2]);
+
+      let path = d3.geoPath().projection(projection);
+
+      // Load external data
+      Promise.all([
+        d3.json("../data/custom.geo.json"),
+        d3.csv(
+          // "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world_population.csv"
+          "../data/wasabi_albums_pre-processed.csv"
+        ),
+      ]).then((files) => {
+        // files[0] will be your GeoJSON object
+        let geojson = files[0];
+
+        // Fit the projection to the size of the SVG container
+        projection.fitSize([width, height], geojson);
+
+        // Use the updated projection to create your map path
+        svg
+          .append("path")
+          .datum(geojson)
+          .attr("d", path)
+          .attr("class", "feature");
+
+        const groupedByCountry = files[1].reduce((accumulator, record) => {
+          if (!accumulator[record.country]) {
+            accumulator[record.country] = [];
+          }
+          accumulator[record.country].push(record);
+          return accumulator;
+        }, {});
+
+        const currentAlbums = files[1];
+
+        const counts = Object.values(groupedByCountry);
+        const minCount = Math.min(...counts);
+        const maxCount = Math.max(...counts);
+
+        const numThresholds = 6; // 7 colors => 6 thresholds
+        const step = (maxCount - minCount) / numThresholds;
+        const domain = Array.from(
+          { length: numThresholds },
+          (_, i) => minCount + i * step
+        );
+
+        let topo = files[0],
+          data = files[1];
+        let colorScale = d3
+          .scaleThreshold()
+          // .domain(domain)
+          .domain([1, 10, 100, 1000, 10000, 100000])
+          .range(d3.schemeBlues[7]);
+
+        // create a tooltip
+        var Tooltip = d3
+          .select("body")
+          .append("div")
+          .style("opacity", 0)
+          .attr("class", "tooltip")
+          .style("background-color", "white")
+          .style("border", "solid")
+          .style("border-width", "2px")
+          .style("border-radius", "5px")
+          .style("padding", "5px");
+
+        function updateTable(albums) {
+          // Correct the table id to match the existing one
+          const tbody = d3.select("#albumTable tbody");
+
+          // Clear the table
+          tbody.html("");
+
+          // Append rows for each album
+          albums.forEach((album) => {
+            const row = tbody.append("tr");
+
+            row.append("td").text(album.cover);
+            row.append("td").text(album.title);
+            row.append("td").text(album.country);
+            row.append("td").text(album.publicationDate);
+            row.append("td").text(album.genre);
+            row.append("td").text(album.length);
+            row.append("td").text(album.cover);
+          });
+
+          // Re-initialize the DataTable for the updated content
+          $("#albumTable").DataTable().draw();
+        }
+
+        function updateAlbumTable(countryName, albums) {
+          // Set country name as table title
+          d3.select("#countryName").text(`Albums from ${countryName}`);
+
+          // Get the DataTable instance
+          let table = $("#albumTable").DataTable();
+
+          // Clear the existing data in the DataTable
+          table.clear();
+
+          // Add new data to the DataTable
+          albums.forEach((album) => {
+            let coverImageHtml = "No Cover"; // Default text
+            try {
+              if (album.cover) {
+                let coverObject = JSON.parse(album.cover);
+                // Add a data-attribute to store the entire cover object for later use
+                coverImageHtml = `<img src="${coverObject.standard}" alt="Cover" class="cover-thumbnail" style="width:50px; height:auto;" data-cover-object='${album.cover}'>`;
+              }
+            } catch (e) {
+              console.error("Error parsing album cover JSON", e);
+            }
+
+            table.row
+              .add([
+                coverImageHtml, // Cover image cell
+                album.title,
+                album.genre || "Unknown",
+                album.length || "Unknown",
+              ])
+              .draw(false);
+          });
+
+          // Redraw the table to reflect changes
+          table.draw();
+        }
+
+        // Three function that changes the tooltip when user hover / move / leave a cell
+        var mouseover = function (d) {
+          Tooltip.style("opacity", 1);
+          d3.select(this).style("stroke", "black").style("opacity", 1);
+
+          const selectedYear = +d3.select("#year-slider").node().value;
+          lastHoveredCountry = d.properties;
+
+          // Filter albums by the selected year
+          let albums = getValue(d.properties).filter(
+            (album) => +album.publicationDate === selectedYear
+          );
+
+          updateAlbumTable(d.properties.name, albums);
+        };
+
+        var mousemove = function (d) {
+          // Get the correct value for the current country
+          let value = getValue(d.properties).length;
+
+          Tooltip.html(value + " albums")
+            .style("left", d3.event.pageX + 10 + "px")
+            .style("top", d3.event.pageY - 28 + "px");
+        };
+
+        var mouseleave = function (d) {
+          Tooltip.style("opacity", 0);
+          d3.select(this).style("stroke", "none").style("opacity", 0.8);
+        };
+
+        // // Draw the map (this part remains unchanged)
+        const mapGroup = svg.append("g");
+
+        function getTotalAlbums(countryId) {
+          return (
+            groupedByCountry[countryId.fips_10] ||
+            groupedByCountry[countryId.iso_a2] ||
+            groupedByCountry[countryId.iso_a2_eh] ||
+            groupedByCountry[countryId.wb_a2] ||
+            []
+          );
+        }
+
+        mapGroup
+          .selectAll("path")
+          .data(topo.features)
+          .enter()
+          .append("path")
+          .attr("d", d3.geoPath().projection(projection))
+          .attr("fill", (d) => colorScale(getTotalAlbums(d.properties).length))
+          .on("mouseover", mouseover)
+          .on("mousemove", mousemove)
+          .on("mouseleave", mouseleave);
+
+        // Modified getValue function to consider the selected year
+        function getValue(countryId) {
+          const selectedYear = +d3.select("#year-slider").node().value;
+          const allAlbums =
+            groupedByCountry[countryId.fips_10] ||
+            groupedByCountry[countryId.iso_a2] ||
+            groupedByCountry[countryId.iso_a2_eh] ||
+            groupedByCountry[countryId.wb_a2] ||
+            [];
+          return allAlbums.filter(
+            (album) => +album.publicationDate === selectedYear
+          );
+        }
+
+        d3.select("#year-slider").on("input", function () {
+          const selectedYear = +this.value;
+          d3.select("#selected-year").text(selectedYear);
+
+          const albumsForSelectedYear = currentAlbums.filter((album) => {
+            const albumYear = +album.publicationDate;
+            return albumYear === selectedYear;
+          });
+
+          mapGroup
+            .selectAll("path")
+            .attr("fill", (d) => colorScale(getValue(d.properties).length));
+          updateTable(albumsForSelectedYear);
+
+          // If a country has been hovered on, update the table for that country
+          if (lastHoveredCountry) {
+            let albums = getValue(lastHoveredCountry).filter(
+              (album) => +album.publicationDate === selectedYear
+            );
+
+            updateAlbumTable(lastHoveredCountry.name, albums);
+          }
+        });
+
+        let interval;
+        let playing = false;
+
+        d3.select("#play-button").on("click", function () {
+          if (playing) {
+            clearInterval(interval); // Stop the playback
+            d3.select(this).text("Play"); // Update button text
+          } else {
+            const slider = d3.select("#year-slider").node();
+            const maxYear = +slider.getAttribute("max");
+
+            interval = setInterval(() => {
+              let currentYear = +slider.value;
+              currentYear++; // Increment year
+
+              if (currentYear > maxYear) {
+                clearInterval(interval); // Stop at maxYear
+                d3.select("#play-button").text("Play");
+              } else {
+                slider.value = currentYear;
+                d3.select("#selected-year").text(currentYear);
+                // Trigger the input event to update the map and table
+                slider.dispatchEvent(new Event("input"));
+              }
+            }, 350);
+
+            d3.select(this).text("Pause"); // Update button text
+          }
+
+          playing = !playing; // Toggle playing state
+        });
+
+        // Extracting years from the dataset
+        let years = files[1]
+          .map((record) => +record.publicationDate)
+          .filter((year) => year !== 0); // Exclude the year 0
+
+        // Determine the min and max years
+        const minYear = Math.min(...years);
+        const maxYear = Math.max(...years);
+
+        d3.select("#year-slider")
+          .attr("min", minYear)
+          .attr("max", maxYear)
+          .attr("value", maxYear - 20); // Setting the initial value of the slider
+
+        d3.select("#selected-year").text(maxYear - 20);
+
+        // JavaScript code to handle the click event of the info icon
+        document
+          .getElementById("info-icon")
+          .addEventListener("click", function () {
+            var card = document.getElementById("info-card");
+            // This will toggle the display property between none and block
+            if (card.style.display === "none") {
+              card.style.display = "block";
+            } else {
+              card.style.display = "none";
+            }
+          });
+      });
+
+      $(document).ready(function () {
+        // Assuming your DataTable is already initialized and the rows are added
+
+        // When the user clicks on a thumbnail
+        $("#albumTable tbody").on("click", "img.cover-thumbnail", function () {
+          var modal = document.getElementById("myModal");
+          var modalImg = document.getElementById("img01");
+          var captionText = document.getElementById("caption");
+
+          // Assuming the cover URL object has already been parsed and added as data-attribute
+          var albumCoverObject = $(this).data("coverObject");
+
+          modal.style.display = "block";
+          modalImg.src = albumCoverObject.xl; // Use the xl image URL
+          captionText.innerHTML = this.alt;
+
+          // Get the <span> element that closes the modal
+          var span = document.getElementsByClassName("close")[0];
+
+          // When the user clicks on <span> (x), close the modal
+          span.onclick = function () {
+            modal.style.display = "none";
+          };
+        });
+      });
+    </script>
+  </body>
+</html>
