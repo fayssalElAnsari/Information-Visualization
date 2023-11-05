@@ -210,3 +210,9 @@ $RECYCLE.BIN/
 !/site/public/data/custom.geo.json
 !/site/public/data/albums_cleaned_MO.csv
 !/site/public/data/artists_cleaned_MO.csv
+# GitHub pages
+!/docs/data/wasabi_albums_pre-processed.csv
+!/docs/data/wasabi_albums_cluster_pre-processed.csv
+!/docs/data/custom.geo.json
+!/docs/data/albums_cleaned_MO.csv
+!/docs/data/artists_cleaned_MO.csv
