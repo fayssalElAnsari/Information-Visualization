@@ -2,11 +2,10 @@
 function loadArtistData() {
     d3.csv('data/artists_cleaned_MO.csv').then(function (data) {
         // Convertir les données en nombres si nécessaire
-        data.forEach(function (d) {
-            d.lifeSpanBegin = +d.lifeSpanBegin;
-            d.deezerFans = +d.deezerFans;
-        });
-
+        // data.forEach(function (d) {
+        //     d.lifeSpanBegin = +d.lifeSpanBegin;
+        //     d.deezerFans = +d.deezerFans;
+        // });
         // Appeler d'autres fonctions pour créer le graphique, ajouter des filtres, etc.
         createScatterPlot(data);
         addFilters(data);
@@ -99,20 +98,24 @@ function createScatterPlot(data) {
     svg.selectAll('circle')
         .on('mouseover', function () {
             d3.select(this)
-                .classed('cursor-pointer', true);
-                
+                .classed('cursor-pointer', true)
+                .transition()// Agrandir le cercle avec une transition
+                .attr('r', 10) // Nouveau rayon du cercle agrandi
+                .style('fill', 'orange');
             // Utilisez d3.pointer pour obtenir les coordonnées du curseur de la souris
             const d = d3.select(this).datum();
             const [x, y] = d3.pointer(event, this);
 
             tooltip.style('display', 'block')
-                .html(`Fans: ${d.deezerFans}<br>Année de début: ${d.lifeSpanBegin}`)
+                .html(`Nom: ${d.name}<br> Nombre de Fans: ${d.deezerFans}<br>Année de début: ${d.lifeSpanBegin}`)
                 .style('left', (x + 10) + 'px')
                 .style('top', (y - 30) + 'px');
         })
         .on('mouseout', function () {
             d3.select(this)
-                .classed('cursor-pointer', false);
+                .classed('cursor-pointer', false)
+                .transition()// Rétablir le cercle à sa taille d'origine
+                .attr('r', 3); // Rayon d'origine
 
             tooltip.style('display', 'none');
         });
