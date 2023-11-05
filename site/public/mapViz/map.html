@@ -5,7 +5,7 @@
     <title></title>
 
     <!-- import the d3 library -->
-    <script type="text/javascript" src="lib/d3.v5.min.js"></script>
+    <script type="text/javascript" src="../lib/d3.v5.min.js"></script>
 
     <!-- <script src="map.js"></script> -->
 
@@ -162,10 +162,10 @@
 
       // Load external data
       Promise.all([
-        d3.json("data/custom.geo.json"),
+        d3.json("../data/custom.geo.json"),
         d3.csv(
           // "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world_population.csv"
-          "data/wasabi_albums_pre-processed.csv"
+          "../data/wasabi_albums_pre-processed.csv"
         ),
       ]).then((files) => {
         // files[0] will be your GeoJSON object

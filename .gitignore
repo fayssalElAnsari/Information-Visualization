@@ -207,3 +207,4 @@ $RECYCLE.BIN/
 ## FORCED INCLUSIONS
 !/site/public/data/wasabi_albums_pre-processed.csv
 !/site/public/data/wasabi_albums_cluster_pre-processed.csv
+!/site/public/data/custom.geo.json
