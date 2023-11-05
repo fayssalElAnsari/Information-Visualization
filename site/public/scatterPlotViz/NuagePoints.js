@@ -17,7 +17,7 @@ function createScatterPlot(data) {
     // Plage des données
     const lifeSpanBeginMin = 1895;
     const lifeSpanBeginMax = 2000;
-    const fansMin = 1;
+    const fansMin = 0.1;
     const fansMax = 1000000;
 
     // Définir les marges et la taille du graphique
@@ -54,7 +54,14 @@ function createScatterPlot(data) {
         .enter()
         .append('circle')
         .attr('cx', d => xScale(d.lifeSpanBegin))
-        .attr('cy', d => yScale(d.deezerFans))
+        .attr('cy', d => {
+            // Vérifiez si d.deezerFans est égal à 0
+            if (d.deezerFans == 0) {
+                return yScale(0.1); // Affectez 0.1 comme valeur de cy
+            } else {
+                return yScale(d.deezerFans); // Utilisez la valeur de deezerFans normalement
+            }
+        })
         .attr('r', 3)
         .attr('name', function (d) {
             return d.name;  // Ajoutez le nom de l'artiste comme attribut
@@ -354,7 +361,6 @@ function filtreDetailLangueArtist(langues) {
 function filterAndSortTaable() {
     const selectedGenre = document.getElementById('genre-filter').value;
     const selectedLanguage = document.getElementById('langue-filter').value;
-    const isSortChecked = document.getElementById('sort-albums').checked;
 
     // Obtenez toutes les lignes (éléments <tr>) du tableau
     const rows = document.querySelectorAll(".album-table tbody tr");
@@ -371,39 +377,6 @@ function filterAndSortTaable() {
             row.style.display = 'none'; // Masquer la ligne
         }
     });
-
-    // Triez les albums par DeezerFans si la case à cocher est cochée
-    if (isSortChecked) {
-        selectedArtistAlbums.sort((a, b) => b.deezerFans - a.deezerFans);
-    } else {
-        selectedArtistAlbums.sort((a, b) => a.publicationDate.localeCompare(b.publicationDate));
-    }
-
-    // Mettez à jour le tableau avec le nouvel ordre des albums en utilisant D3.js
-    const tbody = d3.select(".album-table tbody");
-
-    // Sélectionnez les lignes du tableau existantes
-    let rowsD3 = tbody.selectAll("tr").data(selectedArtistAlbums, d => d.id);
-
-    // Supprimez les lignes existantes
-    rowsD3.exit().remove();
-
-    // Ajoutez de nouvelles lignes avec les données triées
-    const newRows = rowsD3.enter()
-        .append("tr")
-        .html(function (album) {
-            return `
-                <td>${album.publicationDate}</td>
-                <td>${album.name}</td>
-                <td>${album.deezerFans}</td>
-                <td>${album.genre}</td>
-                <td>${album.language}</td>
-                <td><a href="${album.urlAlbum}" target="_blank">Lien</a></td>
-            `;
-        });
-
-    // Mettez à jour les lignes existantes
-    rowsD3 = newRows.merge(rowsD3);
 }
 
 function TriDécroissantFans(selectedArtistAlbums) {
@@ -435,7 +408,7 @@ function TriDécroissantFans(selectedArtistAlbums) {
         selectedArtistAlbums.forEach(function (album) {
             const albumRow = tbody.insertRow();
             albumRow.innerHTML = ` <td>${album.publicationDate}</td>
-                                     <td>${album.name}</td>
+                                     <td>${album.title}</td>
                                      <td>${album.deezerFans}</td>
                                      <td>${album.genre}</td>
                                      <td>${album.language}</td>

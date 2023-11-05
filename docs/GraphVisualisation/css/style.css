@@ -1,0 +1,33 @@
+html, body{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    /* overflow: hidden; */
+}
+
+.tooltip {
+    position: absolute;
+    z-index: 999;
+    right: 0;
+    top:0;
+    width: fit-content;
+    background-color: rgba(0, 0, 0, 0.8); /* Couleur de fond avec transparence */
+    color: white; /* Couleur du texte */
+    padding: 5px;
+    border-radius: 5px; /* Coins arrondis */
+    font-size: 14px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); /* Ombre légère */
+    z-index: 1000; /* Assurez-vous que la tooltip est au-dessus d'autres éléments */
+}
+
+svg{
+    width: 100%;
+    height: 90%;
+    position: absolute;
+    z-index: 0;
+}
+
+.link , .album{
+    cursor: pointer;
+}

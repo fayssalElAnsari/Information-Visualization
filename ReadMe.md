@@ -1,5 +1,7 @@
 # VISUALISATION DE L'ENSEMBLE DE DONNÉES WASABI AVEC 4 VUES DIFFÉRENTES EN D3JS
 
+Live Demo: https://fayssalelansari.github.io/Information-Visualization/
+
 ## APERÇU DU PROJET
 
 Dans ce projet, nous utiliserons le corpus WASABI
