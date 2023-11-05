@@ -17,7 +17,7 @@ function createScatterPlot(data) {
     // Plage des données
     const lifeSpanBeginMin = 1895;
     const lifeSpanBeginMax = 2000;
-    const fansMin = 1;
+    const fansMin = 0.1;
     const fansMax = 1000000;
 
     // Définir les marges et la taille du graphique
@@ -54,7 +54,14 @@ function createScatterPlot(data) {
         .enter()
         .append('circle')
         .attr('cx', d => xScale(d.lifeSpanBegin))
-        .attr('cy', d => yScale(d.deezerFans))
+        .attr('cy', d => {
+            // Vérifiez si d.deezerFans est égal à 0
+            if (d.deezerFans == 0) {
+                return yScale(0.1); // Affectez 0.1 comme valeur de cy
+            } else {
+                return yScale(d.deezerFans); // Utilisez la valeur de deezerFans normalement
+            }
+        })
         .attr('r', 3)
         .attr('name', function (d) {
             return d.name;  // Ajoutez le nom de l'artiste comme attribut
