@@ -1,22 +1,22 @@
 d3.json("data/json/list_genre_after_preprocessing.json", function (genreData) {
-   
+
     console.log("Number of genres loaded: " + Object.keys(genreData).length);
     console.log(genreData);
 
     // build html options for genre select
     const genreSelect = document.getElementById("genre-select");
-    const genres = Object.values(genreData); // Obtenez un tableau de tous les genres
+    // const genres = Object.values(genreData); // Obtenez un tableau de tous les genres
 
-    // Triez les genres par ordre alphabétique
-    genres.sort((a, b) => a.localeCompare(b));
+    // // Triez les genres par ordre alphabétique
+    // genres.sort((a, b) => a.localeCompare(b));
 
-    // Ajoutez chaque genre trié en tant qu'option
-    genres.forEach(genre => {
-        const option = document.createElement("option");
-        option.text = genre;
-        option.value = genre;
-        genreSelect.add(option);
-    });
+    // // Ajoutez chaque genre trié en tant qu'option
+    // genres.forEach(genre => {
+    //     const option = document.createElement("option");
+    //     option.text = genre;
+    //     option.value = genre;
+    //     genreSelect.add(option);
+    // });
 
 
     // Charger les données d'albums après avoir chargé les données de genre
@@ -128,6 +128,17 @@ d3.json("data/json/list_genre_after_preprocessing.json", function (genreData) {
             });
         });
 
+        // sort key by alphabetical order genre_to_numberOfAlbums
+        const genres = Object.keys(genre_to_numberOfAlbums).sort((a, b) => a.localeCompare(b));
+        // Ajoutez chaque genre trié en tant qu'option
+        genres.forEach(genre => {
+            const option = document.createElement("option");
+            option.text = genre;
+            option.value = genre;
+            genreSelect.add(option);
+        });
+
+
         console.log("genre_to_numberOfAlbums: ", genre_to_numberOfAlbums)
         console.log("Number of artists: " + artists_set.size);
 
@@ -152,6 +163,7 @@ d3.json("data/json/list_genre_after_preprocessing.json", function (genreData) {
             .attr("stroke-width", 5)
             .attr("stroke", "black")
             .classed("participate", true) // Ajoutez la classe "participate"
+            .attr("title", d => "Music : " + d.details.title) // Ajoutez l'attribut title
             ;
 
         link.filter(d => d.type === "collaboration")
@@ -159,7 +171,9 @@ d3.json("data/json/list_genre_after_preprocessing.json", function (genreData) {
             // pointillé
             .attr("stroke-dasharray", "5,5")
             .attr("stroke-width", 2)
-            .attr("stroke", "grey");
+            .attr("stroke", "red")
+            .attr("title", d => Array.from(d.commun_albums).join(", ")) // Ajoutez l'attribut title
+            ;
 
         // Créez les nœuds pour les artistes et les albums
         const node = g.selectAll(".node")
@@ -173,11 +187,13 @@ d3.json("data/json/list_genre_after_preprocessing.json", function (genreData) {
             .attr("r", 15)
             .classed("artist", true) // Ajoutez la classe "artist"
             .attr("data-id", d => d.id) // Ajoutez l'attribut id
-            .attr("fill", "red");
+            .attr("fill", "red")
+            .attr("title", d => d.id) // Ajoutez l'attribut title") 
+            ;
 
         // Charger les données de genre
         const genreColorScale = d3.scaleOrdinal()
-            .domain(Object.keys(genreData)) // Domaine : genres
+            .domain(genres) // Domaine : genres
             .range(d3.schemeCategory10); // Plage : couleurs
 
         // Représentez les albums par des carrés et associez la couleur du genre
@@ -202,8 +218,7 @@ d3.json("data/json/list_genre_after_preprocessing.json", function (genreData) {
             .attr("x", 6)
             .attr("y", 3);
 
-        // Trier les légendes par ordre alphabétique
-        const sortedGenreData = genreData.slice().sort((a, b) => a.localeCompare(b));
+        
 
         // Créez une légende de couleur pour les genres
         const legend = svg.append("g")
@@ -216,11 +231,11 @@ d3.json("data/json/list_genre_after_preprocessing.json", function (genreData) {
         // Ajoutez un rectangle gris en arrière-plan de la légende
         legend.append("rect")
             .attr("width", 150) // Ajustez la largeur selon vos besoins
-            .attr("height", sortedGenreData.length * (legendRectSize + legendSpacing))
+            .attr("height", genres.length * (legendRectSize + legendSpacing))
             .style("fill", "lightgrey");
 
         const genreLegend = legend.selectAll(".genre-legend")
-            .data(sortedGenreData)
+            .data(genres)
             .enter()
             .append("g")
             .attr("class", "genre-legend")

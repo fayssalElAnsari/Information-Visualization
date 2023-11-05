@@ -6,6 +6,20 @@ html, body{
     /* overflow: hidden; */
 }
 
+.checkboxes{
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    top: 0;
+    left: 40%;
+    z-index: 1000;
+    width: fit-content;
+    height: fit-content;
+    background-color: silver;
+    border-radius: 5px;
+    padding: 5px;
+}
+
 .tooltip {
     position: absolute;
     z-index: 999;
