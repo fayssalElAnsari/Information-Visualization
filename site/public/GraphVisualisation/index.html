@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Data visualitation project</title>
+    <link rel="stylesheet" href="./css/style.css">    
+</head>
+
+<body>
+
+    <!-- CheckBoxes -->
+    <div class="checkboxes">
+        <div class="checkbox">
+            <input type="checkbox" id="collab" name="collab" value="collab" onchange="toggleCollabLink(this)" checked>
+            <label for="collab">Collaborative</label>
+        </div>
+        <div class="checkbox">
+            <input type="checkbox" id="participate" name="participate" value="participate" onchange="toggleParticipateLink(this)" checked>
+            <label for="participate">Participative</label>
+        </div>
+    </div>
+
+
+
+    <select name="genre-select" id="genre-select" onchange="filterGenre(this.value)">
+        <option value="all" selected>All</option>
+        <!-- Options build by main -->
+    </select>
+    <div class="tooltip" style="display: none;"></div>
+
+
+    
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="./js/main.js"></script>
+    <script src="./js/interaction.js"></script>
+
+</body>
+
+
+
+</html>
