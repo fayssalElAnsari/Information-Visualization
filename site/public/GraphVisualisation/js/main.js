@@ -218,7 +218,7 @@ d3.json("data/json/list_genre_after_preprocessing.json", function (genreData) {
             .attr("x", 6)
             .attr("y", 3);
 
-        
+
 
         // Créez une légende de couleur pour les genres
         const legend = svg.append("g")
@@ -227,19 +227,28 @@ d3.json("data/json/list_genre_after_preprocessing.json", function (genreData) {
 
         const legendRectSize = 18;
         const legendSpacing = 4;
+        const legendWidth = 200; // Largeur du rectangle
 
-        // Ajoutez un rectangle gris en arrière-plan de la légende
+        // Définissez la couleur de fond gris
         legend.append("rect")
-            .attr("width", 150) // Ajustez la largeur selon vos besoins
-            .attr("height", genres.length * (legendRectSize + legendSpacing))
-            .style("fill", "lightgrey");
+            .attr("width", legendWidth)
+            .attr("height", genres.length * (legendRectSize + legendSpacing) + 100) // Ajustez la hauteur
+            .style("fill", "lightgray"); // Couleur de fond gris
+
+        // Ajoutez un titre à l'intérieur du rectangle
+        legend.append("text")
+            .attr("class", "legend-title")
+            .attr("x", legendWidth / 2) // Centrez horizontalement
+            .attr("y", 18) // Ajustez la position verticale
+            .style("text-anchor", "middle")
+            .text("Légende des Genres");
 
         const genreLegend = legend.selectAll(".genre-legend")
             .data(genres)
             .enter()
             .append("g")
             .attr("class", "genre-legend")
-            .attr("transform", (d, i) => `translate(0,${i * (legendRectSize + legendSpacing)})`);
+            .attr("transform", (d, i) => `translate(0,${i * (legendRectSize + legendSpacing) + 20})`); // Ajustez le décalage pour le titre
 
         genreLegend.append("rect")
             .attr("width", legendRectSize)
@@ -249,7 +258,25 @@ d3.json("data/json/list_genre_after_preprocessing.json", function (genreData) {
         genreLegend.append("text")
             .attr("x", legendRectSize + legendSpacing)
             .attr("y", legendRectSize - legendSpacing)
-            .text(d => d);
+            .text(d => `${d}    (${genre_to_numberOfAlbums[d]})`); // Ajoutez le nombre d'albums pour chaque genre
+
+        // Ajoutez le nombre total d'albums et d'artistes
+        legend.append("text")
+            .attr("class", "total-info")
+            .attr("y", genres.length * (legendRectSize + legendSpacing) + 40) // Ajustez le décalage
+            .text(`Nombre total d'albums: ${nodes.length}`);
+        legend.append("text")
+            .attr("class", "total-info")
+            .attr("y", genres.length * (legendRectSize + legendSpacing) + 60) // Ajustez le décalage
+            .text(`Nombre total d'artistes: ${artists_set.size}`);
+        // Ajoutez le nombre de links
+        legend.append("text")
+            .attr("class", "total-info")
+            .attr("y", genres.length * (legendRectSize + legendSpacing) + 80) // Ajustez le décalage
+            .text(`Nombre total de links: ${links.length}`);
+
+
+
 
 
         const defaultLinkDistance = 100;

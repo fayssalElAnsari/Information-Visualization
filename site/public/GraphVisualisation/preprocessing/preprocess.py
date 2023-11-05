@@ -49,13 +49,6 @@ def remplacer_genre(row, column_name='album_genre'):
     max_frequency = 0
     genre = row[column_name]
 
-    # texte = texte.lower()
-    # texte = re.sub('[^\w\s]', '', texte)
-    # texte = re.sub('\d+', '', texte)
-    # texte = re.sub(' +', ' ', texte)
-    # texte = texte.strip()
-    # texte = texte.replace('-', ' ')
-
     if isinstance(genre, str):
         for key_genre in dictionnaire:
             if key_genre in genre:
