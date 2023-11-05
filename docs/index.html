@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Music Data Visualizations</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background: url("data/img/background-2.png") no-repeat center center
+          fixed;
+        background-size: cover;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+      }
+
+      .button-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 40px;
+      }
+
+      .button-link {
+        position: relative;
+        display: inline-block;
+      }
+
+      .button-link img {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        transition: transform 0.3s ease;
+        border: 5px solid rgba(255, 255, 255, 0.7); /* White border for light background */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Stronger shadow for better visibility */
+      }
+
+      .button-link img:hover {
+        transform: scale(1.1);
+        cursor: pointer;
+      }
+
+      .button-link span {
+        position: absolute;
+        width: 100%;
+        left: 0;
+        bottom: -30px;
+        font-size: 16px;
+        color: white;
+        text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
+          1px 1px 0 #000; /* Creates a 1px 'border' around the text */
+      }
+
+      @media (max-width: 768px) {
+        .button-container {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="button-container">
+      <a class="button-link" href="mapViz/map.html">
+        <img src="data/img/map-icon.png" alt="Map" />
+        <span>World Map</span>
+      </a>
+      <a class="button-link" href="Compartimentage/compartimentage.html">
+        <img src="data/img/cercles-icon.png" alt="Compartimentage" />
+        <span>Cercles</span>
+      </a>
+      <a class="button-link" href="GraphVisualisation\index.html">
+        <img src="data/img/graph-icon.png" alt="Visualization 3" />
+        <span>Graph</span>
+      </a>
+      <a class="button-link" href="scatterPlotViz/NuagePoints.html">
+        <img src="data/img/scatter-points-icon.png" alt="Scatter Plot" />
+        <span>Scatter Plot</span>
+      </a>
+    </div>
+  </body>
+</html>

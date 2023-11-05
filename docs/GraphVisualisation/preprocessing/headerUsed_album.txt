@@ -1,0 +1,13 @@
+title
+name
+genre
+publicationDate
+
+urlAlbum
+urlAllmusic
+urlAmazon
+urlDiscogs
+urlITunes
+urlMusicBrainz
+urlSpotify
+urlWikipedia
