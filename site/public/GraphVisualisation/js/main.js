@@ -365,6 +365,55 @@ d3.json("data/json/list_genre_after_preprocessing.json", function (genreData) {
 
 
 
+
+
+
+
+        // Obtenez tous les liens avec la classe "link" et le type "music"
+        const musicLinks = Array.from(document.querySelectorAll(".link.participate"));
+
+        // Créez un objet pour stocker les liens en fonction de leur source et target
+        const linksBySourceAndTarget = {};
+
+        // Parcourez les liens et regroupez-les par source et target
+        musicLinks.forEach(link => {
+            const source = link.getAttribute("data-source");
+            const target = link.getAttribute("data-target");
+            const linkKey = `${source}-${target}`;
+
+            if (!linksBySourceAndTarget[linkKey]) {
+                linksBySourceAndTarget[linkKey] = [];
+            }
+
+            linksBySourceAndTarget[linkKey].push(link);
+        });
+
+        // Parcourez les groupes de liens ayant la même source et target
+        for (const linkKey in linksBySourceAndTarget) {
+            const linksWithSameSourceAndTarget = linksBySourceAndTarget[linkKey];
+
+            if (linksWithSameSourceAndTarget.length > 1) {
+                console.log(`Il existe ${linksWithSameSourceAndTarget.length} liens avec la même source et target :`);
+                linksWithSameSourceAndTarget.forEach(link => {
+                    console.log(link)
+                    // console.log(`LINK ${link},  Source : ${link.getAttribute("data-source")}, Target : ${link.getAttribute("data-target")}`);
+                    
+                });
+            }
+        };
+
+
+
+
+
+
+
+
+
+
+
+
+
     });
 });
 

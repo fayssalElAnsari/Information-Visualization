@@ -112,6 +112,10 @@ df_song = standardize_string(df_song, 'album_genre')
 df_album = standardize_string(df_album, 'genre')
 df_album = standardize_string(df_album, 'title')
 
+df_song = remove_empty_string_row(df_song, 'albumTitle')
+df_song = remove_empty_string_row(df_song, 'artist')
+df_album = remove_empty_string_row(df_album, 'title')
+
 dictionnaire = creer_dictionnaire_frequences('site/public/GraphVisualisation/preprocessing/genre_music_all.txt')
 print(dictionnaire)
 with open('site/public/GraphVisualisation/data/json/dictionnaire_frequences_genre.json', 'w') as fichier_sortie:
@@ -127,9 +131,6 @@ list_genre_after_preprocessing = list(list_genre_after_preprocessing)
 with open('site/public/GraphVisualisation/data/json/list_genre_after_preprocessing.json', 'w') as outfile:
     json.dump(list_genre_after_preprocessing, outfile)
 
-df_song = remove_empty_string_row(df_song, 'albumTitle')
-df_song = remove_empty_string_row(df_song, 'artist')
-df_album = remove_empty_string_row(df_album, 'title')
 
 df_song = df_song.fillna('None')
 df_album = df_album.fillna('None')
