@@ -169,6 +169,7 @@
         ),
       ]).then((files) => {
         // files[0] will be your GeoJSON object
+        console.log(files);
         let geojson = files[0];
 
         // Fit the projection to the size of the SVG container
